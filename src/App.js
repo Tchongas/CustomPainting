@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useState } from 'react';
+import ImageUploader from './ImageUploader';
+import DownloadButton from './DownloadButton';
+import './css/App.css';
 
 function App() {
+  const [image, setImage] = useState(null);
+
+  const handleImageUpload = (uploadedImage) => {
+    setImage(uploadedImage);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app-container'>
+      <h1>Minecraft Custom Painting</h1>
+      <ImageUploader onImageUpload={handleImageUpload} />
+      {image && <DownloadButton image={image} />}
     </div>
   );
 }
