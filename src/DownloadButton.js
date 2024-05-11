@@ -1,43 +1,60 @@
 // DownloadButton.js
 import React from 'react';
 import JSZip from 'jszip';
+import './css/DowloadButton.css';
 
-function DownloadButton({ image }) {
+function DownloadButton({ images }) {
   const handleDownload = () => {
+    if (!images || images.length === 0) {
+      console.error('No images to download');
+      return;
+    }
+
     const zip = new JSZip();
     const paintingFolderPath = 'assets/custom/textures/painting/';
-    const paintingFileName = 'painting.png';
     const paintingJsonFileName = 'painting.json';
     const placeableJsonFileName = 'placeable.json';
     const packMcmetaFileName = 'pack.mcmeta';
-    const imageName = 'painting';
 
+// Initialize an array to hold values
+let valuesArray = [];
+
+// Loop through the images
+images.forEach((image, index) => {
+    const imageName = `painting_${index}`;
+    const paintingFileName = `${imageName}.png`;
+    
     // Add image to the zip file
     zip.folder(paintingFolderPath).file(paintingFileName, image.split(',')[1], { base64: true });
 
     // Create painting JSON content
     const paintingJsonContent = JSON.stringify({
-      asset_id: `custom:${imageName}`,
-      height: 2,
-      width: 2
+        asset_id: `custom:${imageName}`,
+        height: 2,
+        width: 2
     });
 
     // Add painting JSON file to the zip file
     zip.file(`data/custom/painting_variant/${imageName}.json`, paintingJsonContent);
 
-    // Create placeable JSON content
-    const placeableJsonContent = JSON.stringify({
-      values: [`custom:${imageName}`]
-    });
+    // Add custom image name to the values array
+    valuesArray.push(`custom:${imageName}`);
+});
 
-    // Add placeable JSON file to the zip file
-    zip.file(`data/minecraft/tags/painting_variant/${placeableJsonFileName}`, placeableJsonContent);
+// Create placeable JSON content with all custom image names
+const placeableJsonContent = JSON.stringify({
+    values: valuesArray
+});
+
+// Add placeable JSON file to the zip file
+zip.file(`data/minecraft/tags/painting_variant/${placeableJsonFileName}`, placeableJsonContent);
+
 
     // Create pack.mcmeta content
     const packMcmetaContent = JSON.stringify({
       pack: {
         pack_format: 33,
-        description: "Pufferfish paintings for 24w18a"
+        description: "Custom Paintings Datapack and Texture Pack"
       }
     });
 
@@ -61,7 +78,7 @@ function DownloadButton({ image }) {
       });
   };
 
-  return <button onClick={handleDownload}>Download Texture Pack</button>;
+  return <a onClick={handleDownload} className='download-button'>Download Texture Pack</a>;
 }
 
 export default DownloadButton;

@@ -1,7 +1,15 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(20, 19, 31);
   }
 
+h1 {
+    color: white;
+}
+
+h2 {
+    color: white;
+}
 
 .app-container {
     max-width: 600px;

@@ -8,15 +8,54 @@
   }
   
   .upload-input {
+    color: white;
     padding: 10px;
-    border: 2px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 20px;
     width: 100%;
     box-sizing: border-box;
+    background-color: #33354d;
+  }
+
+  .upload-input-number {
+    margin-inline: 10px;  
+    width: 70px;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    font-size: 20px;
+    border: none;
+    background-color: #33354d;
+    margin-bottom: 20px;
   }
   
   .upload-input:focus {
     outline: none;
     border-color: #007bff;
+  }
+
+  .plus-button {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 20px;
+    width: 60px;
+    min-width: 50px;
+    box-sizing: border-box;
+    background-color: #5eb0bb;
+  }
+  .plus-button:hover {
+    background-color: #6ccbd8;
+  }
+
+  .panting-container {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(32, 30, 48);
+  } 
+
+  span, h1, h2, h3 {
+    color: #ffffff;
   }

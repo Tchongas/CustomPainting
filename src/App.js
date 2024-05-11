@@ -5,17 +5,18 @@ import DownloadButton from './DownloadButton';
 import './css/App.css';
 
 function App() {
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
 
-  const handleImageUpload = (uploadedImage) => {
-    setImage(uploadedImage);
+  const handleImageUpload = (uploadedImages) => {
+    setImages(uploadedImages);
   };
 
   return (
     <div className='app-container'>
-      <h1>Minecraft Custom Painting</h1>
+      <h1>Custom Painting Creator</h1>
+      {images.length > 0 && <DownloadButton images={images} />}
       <ImageUploader onImageUpload={handleImageUpload} />
-      {image && <DownloadButton image={image} />}
+      
     </div>
   );
 }
