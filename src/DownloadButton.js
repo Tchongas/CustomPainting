@@ -3,7 +3,7 @@ import React from 'react';
 import JSZip from 'jszip';
 import './css/DowloadButton.css';
 
-function DownloadButton({ images }) {
+function DownloadButton({ images, widths, heights }) {
   const handleDownload = () => {
     if (!images || images.length === 0) {
       console.error('No images to download');
@@ -21,24 +21,29 @@ let valuesArray = [];
 
 // Loop through the images
 images.forEach((image, index) => {
-    const imageName = `painting_${index}`;
-    const paintingFileName = `${imageName}.png`;
-    
-    // Add image to the zip file
-    zip.folder(paintingFolderPath).file(paintingFileName, image.split(',')[1], { base64: true });
+  const imageName = `painting_${index}`;
+  const paintingFileName = `${imageName}.png`;
 
-    // Create painting JSON content
-    const paintingJsonContent = JSON.stringify({
-        asset_id: `custom:${imageName}`,
-        height: 2,
-        width: 2
-    });
+  // Add image to the zip file
+  console.log(image);
+  if (!image.width || !image.height) {
+    console.error('Invalid image dimensions');
+    return;
+  }
+  zip.folder(paintingFolderPath).file(paintingFileName, image.dataUrl.split(',')[1], { base64: true });
 
-    // Add painting JSON file to the zip file
-    zip.file(`data/custom/painting_variant/${imageName}.json`, paintingJsonContent);
+  // Create painting JSON content
+  const paintingJsonContent = JSON.stringify({
+      asset_id: `custom:${imageName}`,
+      height: image.height,
+      width: image.width
+  });
 
-    // Add custom image name to the values array
-    valuesArray.push(`custom:${imageName}`);
+  // Add painting JSON file to the zip file
+  zip.file(`data/custom/painting_variant/${imageName}.json`, paintingJsonContent);
+
+  // Add custom image name to the values array
+  valuesArray.push(`custom:${imageName}`);
 });
 
 // Create placeable JSON content with all custom image names

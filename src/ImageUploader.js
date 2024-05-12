@@ -1,8 +1,10 @@
+// ImageUploader.js
 import React, { useState } from 'react';
-import './css/ImageUploader.css';  
+import './css/ImageUploader.css';
 
 function ImageUploader({ onImageUpload }) {
   const [images, setImages] = useState([]);
+  const [submitClicked, setSubmitClicked] = useState(false);
 
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
@@ -10,10 +12,12 @@ function ImageUploader({ onImageUpload }) {
 
     reader.onloadend = () => {
       const updatedImages = [...images];
-      updatedImages[index] = reader.result;
+      updatedImages[index] = {
+        dataUrl: reader.result, // Store the data URL
+        height: '',
+        width: ''
+      };
       setImages(updatedImages);
-      onImageUpload(updatedImages);
-      console.log(updatedImages);
     };
 
     if (file) {
@@ -25,32 +29,56 @@ function ImageUploader({ onImageUpload }) {
     setImages([...images, null]);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+
+    // Loop through each image to gather width and height values
+    const updatedImages = images.map((imageData, index) => {
+      const widthInput = e.target.querySelector(`.width-input-${index}`);
+      const heightInput = e.target.querySelector(`.height-input-${index}`);
+      
+      return {
+        ...imageData,
+        width: parseInt(widthInput.value),
+        height: parseInt(heightInput.value)
+      };
+    });
+
+    // Pass the updated images state to the parent component
+    onImageUpload(updatedImages);
+  };
+
   return (
-    <div className='app-container'>
+    <div className='panting-container'>
       <h2>Upload PNG files for painting:</h2>
-      {images.map((image, index) => (
-        <div key={index} className='panting-container'>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImageChange(e, index)}
-            className="upload-input"
-          />
-        <h3>Painting size:</h3>
-          <input
-            placeholder='Width'
-            type="text"
-            className="upload-input-number"
-          />
-          <span className='text'>x</span>
-          <input
-            placeholder='Height'
-            type="text"
-            className="upload-input-number"
-          />
-        </div>
-      ))}
-      <button onClick={handleAddImage} className='plus-button'>+</button>
+      <form onSubmit={handleSubmit}>
+        {images.map((image, index) => (
+          <div key={index} className='painting-container'>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleImageChange(e, index)}
+              className="upload-input"
+            />
+            <h3>Painting size:</h3>
+            <input
+              placeholder='Width'
+              type="text"
+              className={`upload-input-number width-input-${index}`}
+            />
+            <span className='text'>x</span>
+            <input
+              placeholder='Height'
+              type="text"
+              className={`upload-input-number height-input-${index}`}
+            /> <br />
+            
+          </div>
+        ))}
+        <button type="submit" onClick={handleAddImage} className='add-input'>Submit Painting</button>
+        
+      </form>
     </div>
   );
 }
