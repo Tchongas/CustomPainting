@@ -15,16 +15,16 @@ function DownloadButton({ images, widths, heights }) {
     const paintingJsonFileName = 'painting.json';
     const placeableJsonFileName = 'placeable.json';
     const packMcmetaFileName = 'pack.mcmeta';
+    let valuesArray = [];
 
-// Initialize an array to hold values
-let valuesArray = [];
 
-// Loop through the images
+
+
 images.forEach((image, index) => {
   const imageName = `painting_${index}`;
   const paintingFileName = `${imageName}.png`;
 
-  // Add image to the zip file
+  
   console.log(image);
   if (!image.width || !image.height) {
     console.error('Invalid image dimensions');
@@ -32,30 +32,30 @@ images.forEach((image, index) => {
   }
   zip.folder(paintingFolderPath).file(paintingFileName, image.dataUrl.split(',')[1], { base64: true });
 
-  // Create painting JSON content
+  
   const paintingJsonContent = JSON.stringify({
       asset_id: `custom:${imageName}`,
       height: image.height,
       width: image.width
   });
 
-  // Add painting JSON file to the zip file
+  
   zip.file(`data/custom/painting_variant/${imageName}.json`, paintingJsonContent);
 
-  // Add custom image name to the values array
+
   valuesArray.push(`custom:${imageName}`);
 });
 
-// Create placeable JSON content with all custom image names
+
 const placeableJsonContent = JSON.stringify({
     values: valuesArray
 });
 
-// Add placeable JSON file to the zip file
+
 zip.file(`data/minecraft/tags/painting_variant/${placeableJsonFileName}`, placeableJsonContent);
 
 
-    // Create pack.mcmeta content
+    
     const packMcmetaContent = JSON.stringify({
       pack: {
         pack_format: 33,
@@ -63,10 +63,9 @@ zip.file(`data/minecraft/tags/painting_variant/${placeableJsonFileName}`, placea
       }
     });
 
-    // Add pack.mcmeta file to the zip file
+    
     zip.file(packMcmetaFileName, packMcmetaContent);
 
-    // Generate and download the zip file
     zip
       .generateAsync({ type: 'blob' })
       .then((blob) => {

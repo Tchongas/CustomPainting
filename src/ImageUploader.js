@@ -13,7 +13,7 @@ function ImageUploader({ onImageUpload }) {
     reader.onloadend = () => {
       const updatedImages = [...images];
       updatedImages[index] = {
-        dataUrl: reader.result, // Store the data URL
+        dataUrl: reader.result,
         height: '',
         width: ''
       };
@@ -33,7 +33,7 @@ function ImageUploader({ onImageUpload }) {
     e.preventDefault();
     
 
-    // Loop through each image to gather width and height values
+    
     const updatedImages = images.map((imageData, index) => {
       const widthInput = e.target.querySelector(`.width-input-${index}`);
       const heightInput = e.target.querySelector(`.height-input-${index}`);
@@ -45,7 +45,7 @@ function ImageUploader({ onImageUpload }) {
       };
     });
 
-    // Pass the updated images state to the parent component
+    
     onImageUpload(updatedImages);
   };
 
