@@ -12,7 +12,6 @@ function DownloadButton({ images, widths, heights }) {
 
     const zip = new JSZip();
     const paintingFolderPath = 'assets/custom/textures/painting/';
-    const paintingJsonFileName = 'painting.json';
     const placeableJsonFileName = 'placeable.json';
     const packMcmetaFileName = 'pack.mcmeta';
     let valuesArray = [];

@@ -4,7 +4,6 @@ import './css/ImageUploader.css';
 
 function ImageUploader({ onImageUpload }) {
   const [images, setImages] = useState([]);
-  const [submitClicked, setSubmitClicked] = useState(false);
 
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
